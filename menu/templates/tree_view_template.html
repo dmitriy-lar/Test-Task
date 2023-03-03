@@ -1,0 +1,27 @@
+{% load menu_tags %}
+<li>
+    {% if item.parent == None %}
+    <div class="fs-3">{{ item }}</div>
+    {% else %}
+    {% if path|to_int == item.pk %}
+    <a href="{% url 'content_page' item.pk %}" style="color:black"
+       class="fw-bold text-decoration-none fs-4"><span>{{ item }}</span></a>
+
+    {% else %}
+    <a href="{% url 'content_page' item.pk %}" style="color:black"
+       class="text-decoration-none fs-5"><span>{{ item }}</span></a>
+    {% endif %}
+    {% endif %}
+
+    {% if item.children.first %}
+    <ul>
+        {% for ch in item.children.all %}
+        {% with item=ch template_name='tree_view_template.html' %}
+        {% include template_name %}
+        {%endwith%}
+        {% endfor %}
+    </ul>
+    {% endif %}
+</li>
+
+
